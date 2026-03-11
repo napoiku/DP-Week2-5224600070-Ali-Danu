@@ -1,22 +1,28 @@
 #pragma once
 #include <vector>
+#include "IScoringSystem.h"
+#include "IRewardSystem.h"
+#include "IGenerateHand.h"
+#include "SelectBlind.h"
+#include "ShopSystem.h"
 #include "IModifier.h"
 
 class RunSession {
 private:
     int money;
     int currentRound;
+    IScoringSystem* scoring;
+    IRewardSystem* reward;
+    IGenerateHand* generator;
+    SelectBlind blindSelector;
+    ShopSystem shop;
     std::vector<IModifier*> inventory;
 
 public:
-    RunSession();
-    void startRun(); // Menjalankan loop utama
-    
-    // Fase-fase (Invariant Phases)
-    void selectBlind();    
-    void generateHand();   
-    void chooseCards();    
-    void calculateScore(); 
-    void resolveReward();  
-    void openShop();       
+    RunSession(IScoringSystem* s, IRewardSystem* r, IGenerateHand* g);
+    ~RunSession();
+    void startRun();
+
+private:
+    void processRound();
 };

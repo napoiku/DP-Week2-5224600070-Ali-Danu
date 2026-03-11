@@ -24,10 +24,14 @@ Core Loop:
 -Jika sistem cek win/lose sebelum menghitung kombinasi, apa yang akan dibandingkan dengan target blind.  
 Jadi jika urutan berubah keseluruhan sistem permainan akan hancur  
   
-1. What is the invariant structure of your game?
--
-2. What parts are mutable?
--
-3. If you wanted to add a new feature, which class would change?
--
-4. If you changed the loop order, what would break?
+1. What is the invariant structure of your game?  
+-Struktur invarian dalam game ini adalah alur urutan fase (core loop) yang didefinisikan di dalam metode processRound() pada kelas RunSession. Struktur ini mencakup sembilan langkah sistematis: dimulai dari pemilihan blind, pembuatan hand, aksi pemain, penghitungan skor, pengecekan kondisi menang/kalah, pemberian hadiah, hingga fase toko dan pengulangan ronde.  
+
+2. What parts are mutable?  
+-Select blind, generate hand, modifier, scoring, reward, dan shop system.  
+
+3. If you wanted to add a new feature, which class would change?  
+-SimpleGenerate, Reward, Scoring, ShopSystem, SelectBlind, ModifierFactory, atau membuat class baru dari interface yang ada.  
+
+4. If you changed the loop order, what would break?  
+-Jika urutan loop diubah, integritas dan logika permainan akan hancur.
