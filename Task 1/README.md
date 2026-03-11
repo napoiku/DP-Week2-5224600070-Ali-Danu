@@ -1,0 +1,11 @@
+1. What is the invariant structure in your program?  
+Dalam program ini, struktur invarian terletak pada kelas RunSession, khususnya pada metode yang mengatur alur permainan (core loop). Struktur ini mencakup urutan fase yang sudah ditentukan secara baku: dimulai dari pembuatan input, penghitungan skor dasar, penghitungan hadiah, pembaruan jumlah uang, fase toko, hingga perpindahan ronde. Dengan menjaga struktur ini tetap invarian, kita memastikan bahwa integritas alur permainan tetap terjaga meskipun aturan di dalam tiap fasenya berubah.  
+
+2. Which parts are mutable?  
+Dalam program ini, bagian mutable direpresentasikan dari interface yang ada, yaitu IInputGenerator, IScoringRule, dan IRewardRule. Contohnya adalah perubahan dari pembuatan input manual menjadi RandomInputGenerator (Modifikasi 1) serta perubahan logika perhitungan uang pada IRewardRule (Modifikasi 2). Karena bagian-bagian ini dipisahkan dari kelas utama, kita memiliki fleksibilitas untuk bereksperimen dengan mekanik game yang berbeda tanpa harus menulis ulang logika inti permainan.  
+
+3. When you replaced the InputGenerator, why didn’t RunSession change?  
+RunSession tidak berubah karena bergantung pada Abstraksi (Interface), bukan pada implementasi konkrit. RunSession hanya mengenal IInputGenerator sebagai sebuah kontrak yang menjamin adanya fungsi generate(). Saat kita mengganti generator lama dengan RandomInputGenerator, RunSession tetap memanggil fungsi yang sama melalui pointer interface tersebut. Karena fungsi tersebut bersifat virtual, C++ secara otomatis menjalankan logika terbaru dari kelas anak yang kita masukkan melalui main(). Hal inilah yang memungkinkan modifikasi dilakukan tanpa menyentuh kode di dalam RunSession sedikit pun.  
+
+4. What would happen if scoring logic was placed inside RunSession?
+Jika logika scoring diletakkan langsung di dalam RunSession, maka prinsip pemisahan tanggung jawab akan terlanggar. Hal ini akan menyebabkan RunSession menjadi terlalu kaku setiap kali kita ingin mengubah rumus skor, kita terpaksa harus memodifikasi file RunSession.cpp. Selain meningkatkan risiko terjadinya bug pada alur utama, hal ini juga membuat kode sulit diuji secara terpisah dan melanggar aturan Invariant yang mengharuskan struktur utama tetap bersih dari detail logika spesifik.  
